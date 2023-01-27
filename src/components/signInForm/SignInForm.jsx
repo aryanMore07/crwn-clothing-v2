@@ -4,20 +4,18 @@ import { signInWithGooglePopup, createUserDocumentFromAuth, signInAuthUserWithEm
 import Button from '../button/Button';
 import FormInput from '../formInput/FormInput';
 import './signInform.scss';
+const defaultFormFeild = {
+    email: '',
+    password: '',
+}
 
 const SignInForm = () => {
-
-    const defaultFormFeild = {
-        email: '',
-        password: '',
-    }
 
     const [formFeilds, setFormFeilds] = useState(defaultFormFeild);
     const { email, password } = formFeilds;
 
     const signInWithGoogle = async () => {
-        const {user} = await signInWithGooglePopup();
-        await createUserDocumentFromAuth(user);
+        await signInWithGooglePopup();
     }
 
 
@@ -35,8 +33,7 @@ const SignInForm = () => {
 
 
         try {
-            const response = await signInAuthUserWithEmailAndPassword(email, password);
-            console.log(response);
+            await signInAuthUserWithEmailAndPassword(email, password);
             resetFormFeild();
         } catch (error) {
             switch (error.code) {
