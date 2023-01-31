@@ -1,8 +1,8 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
-import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore'
+import { getFirestore, doc, getDoc, setDoc, collection, writeBatch, query, getDocs } from 'firebase/firestore'
 
-
+// Referance to connect with The Firebase Db:
 const firebaseConfig = {
     apiKey: "AIzaSyDDF1gBT1-hSwMWT1W0M-gAP4VlMJj1bn8",
     authDomain: "e-commerce-db-b9aaf.firebaseapp.com",
@@ -21,10 +21,48 @@ googleProvider.setCustomParameters({
 });
 
 export const auth = getAuth();
+
+// Function to use Google as a SignIn option 
 export const signInWithGooglePopup = () => signInWithPopup(auth, googleProvider);
 
 export const db = getFirestore();
 
+
+
+// Function to add Categories collection to the FireStore:
+export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
+    const collectionRef = collection(db, collectionKey);
+    const batch = writeBatch(db);
+
+    objectsToAdd.forEach(object => {
+        const docRef = doc(collectionRef, object.title.toLowerCase());
+        batch.set(docRef, object);
+    });
+
+    await batch.commit();
+    console.log('done');
+
+} 
+
+//
+export const getCategoriesAndDocuments = async () => {
+    const collectionRef = collection(db, 'categories');
+    const q = query(collectionRef);
+
+    const querySnapshot = await getDocs(q);
+    const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
+        const { title, items } = docSnapshot.data();
+        acc[title.toLowerCase()] = items;
+        return acc;
+    }, {});
+
+    return categoryMap;
+}
+
+
+
+
+// Function to add user details inside the Firestore:
 export const createUserDocumentFromAuth = async (userAuth, additionalInformation = {}) => {
 
     if( !userAuth ) return;
@@ -54,6 +92,8 @@ export const createUserDocumentFromAuth = async (userAuth, additionalInformation
     return userDocRef;
 };
 
+
+// Function to SignIn User using email and password:
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
     if( !email || !password ) return;
     return await createUserWithEmailAndPassword(auth, email, password);
