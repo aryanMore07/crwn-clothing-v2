@@ -5,6 +5,8 @@ import { BUTTON_TYPE_CLASSES } from "../button/Button";
 import { PaymentFormContainer, FormContainer, PaymentButton } from './paymentFormStyles';
 import { selectCartTotal } from '../../store/cart/cartSelector';
 import { selectCurrentUser } from '../../store/user/userSelector';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const PaymentForm = () => {
@@ -12,9 +14,9 @@ const PaymentForm = () => {
     const elements = useElements();
     const amount = useSelector(selectCartTotal);
     const currentUser = useSelector(selectCurrentUser);
-    const [ isProcessingPayment, setIsProcessingPayment ] = useState(false);
+    const [isProcessingPayment, setIsProcessingPayment] = useState(false);
 
-    
+
     const paymentHandler = async (e) => {
         e.preventDefault();
 
@@ -53,10 +55,28 @@ const PaymentForm = () => {
         setIsProcessingPayment(false);
 
         if (paymentResult.error) {
-            alert(paymentResult.error.message);
+            toast.error(paymentResult.error.message, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                });
         } else {
             if (paymentResult.paymentIntent.status === 'succeeded') {
-                alert('Payment Successful');
+                toast.success('Payment Successful 😄', {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    });
             }
         }
 
@@ -64,6 +84,18 @@ const PaymentForm = () => {
 
     return (
         <PaymentFormContainer>
+            <ToastContainer
+                position="top-center"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
             <h3>Debit/Credit CARD PAYMENT: </h3>
             <FormContainer onSubmit={paymentHandler}>
                 <CardElement />
