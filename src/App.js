@@ -1,10 +1,10 @@
 import { Routes, Route } from 'react-router-dom';
 import Home from './routes/home/Home.jsx';
-import Navigation from './routes/navigation/Navigation.jsx';
+import Navigation from './routes/navigation/Navigation';
 import Authentication from './routes/authentication/Authentication.jsx';
 import Shop from './routes/shop/Shop.jsx';
 import CheckOut from './components/checkout/CheckOut.jsx';
-import { checkUserSession } from './store/user/userAction.js';
+import { checkUserSession } from './store/user/userAction';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 
