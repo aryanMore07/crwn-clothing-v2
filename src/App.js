@@ -1,9 +1,9 @@
 import { Routes, Route } from 'react-router-dom';
 import Home from './routes/home/Home';
 import Navigation from './routes/navigation/Navigation';
-import Authentication from './routes/authentication/Authentication.jsx';
-import Shop from './routes/shop/Shop.jsx';
-import CheckOut from './components/checkout/CheckOut.jsx';
+import Authentication from './routes/authentication/Authentication';
+import Shop from './routes/shop/Shop';
+import CheckOut from './components/checkout/CheckOut';
 import { checkUserSession } from './store/user/userAction';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
