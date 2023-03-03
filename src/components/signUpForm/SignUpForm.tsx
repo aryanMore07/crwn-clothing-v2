@@ -1,15 +1,17 @@
 import { useState, FormEvent, ChangeEvent } from 'react';
-import { AuthErrorCodes, AuthError } from 'firebase/auth';
+// import { AuthErrorCodes, AuthError } from 'firebase/auth';   
 import { useDispatch } from 'react-redux';
 import { signUpStart } from '../../store/user/userAction';
 import Button from '../button/Button';
 import FormInput from '../formInput/FormInput';
 import { SignUpContainer } from './signupform-styles'; 
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 
 
 const SignUpForm = () => {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const defaultFormFeild = {
         displayName: '',
@@ -44,52 +46,43 @@ const SignUpForm = () => {
                 theme: "light",
                 });
             return;
-        
         }
         try {
             dispatch(signUpStart(email, password, displayName));
             resetFormField();   
+            navigate('/');
         } catch (error) {
-            if((error as AuthError).code === AuthErrorCodes.EMAIL_EXISTS) {
-                toast.error(`Cannot create user, email already in use`, {
-                    position: "top-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                    });
-            } else {
-                toast.error(`User creation encountered an error`, {
-                    position: "top-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                    });
-            }            
+            console.log(`Error oocured`);
+            console.log(`${error}`);
+
+            // if((error as AuthError).code === AuthErrorCodes.EMAIL_EXISTS) {
+            //     toast.error(`Cannot create user, email already in use`, {
+            //         position: "top-center",
+            //         autoClose: 5000,
+            //         hideProgressBar: false,
+            //         closeOnClick: true,
+            //         pauseOnHover: true,
+            //         draggable: true,
+            //         progress: undefined,
+            //         theme: "light",
+            //         });
+            // } else {
+            //     toast.error(`User creation encountered an error`, {
+            //         position: "top-center",
+            //         autoClose: 5000,
+            //         hideProgressBar: false,
+            //         closeOnClick: true,
+            //         pauseOnHover: true,
+            //         draggable: true,
+            //         progress: undefined,
+            //         theme: "light",
+            //         });
+            // }            
         }
     }
 
   return (
     <SignUpContainer>
-        <ToastContainer
-                    position="top-center"
-                    autoClose={5000}
-                    hideProgressBar={false}
-                    newestOnTop={false}
-                    closeOnClick
-                    rtl={false}
-                    pauseOnFocusLoss
-                    draggable
-                    pauseOnHover
-                    theme="light"
-                />
       <h2>Don't have an account?</h2>
       <span>Sign up with your email and password</span>
       <form onSubmit={handleSubmit}>

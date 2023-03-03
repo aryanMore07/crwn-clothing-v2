@@ -5,8 +5,9 @@ import { BUTTON_TYPE_CLASSES } from "../button/Button";
 import { PaymentFormContainer, FormContainer, PaymentButton } from './paymentFormStyles';
 import { selectCartTotal } from '../../store/cart/cartSelector';
 import { selectCurrentUser } from '../../store/user/userSelector';
-import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { toast } from "react-toastify";
+
 
 const PaymentForm = () => {
     const stripe = useStripe();
@@ -14,7 +15,6 @@ const PaymentForm = () => {
     const amount = useSelector(selectCartTotal);
     const currentUser = useSelector(selectCurrentUser);
     const [isProcessingPayment, setIsProcessingPayment] = useState(false);
-
 
     const paymentHandler = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -37,7 +37,9 @@ const PaymentForm = () => {
 
         const cardDetails = elements.getElement(CardElement);
 
-        if(cardDetails === null) return; 
+
+
+        if (cardDetails === null) return;
 
         const paymentResult = await stripe.confirmCardPayment(client_secret, {
             payment_method: {
@@ -67,7 +69,7 @@ const PaymentForm = () => {
                 draggable: true,
                 progress: undefined,
                 theme: "light",
-                });
+            });
         } else {
             if (paymentResult.paymentIntent.status === 'succeeded') {
                 toast.success('Payment Successful 😄', {
@@ -79,7 +81,7 @@ const PaymentForm = () => {
                     draggable: true,
                     progress: undefined,
                     theme: "light",
-                    });
+                });
             }
         }
 
@@ -87,18 +89,6 @@ const PaymentForm = () => {
 
     return (
         <PaymentFormContainer>
-            <ToastContainer
-                position="top-center"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="light"
-            />
             <h3>Debit/Credit CARD PAYMENT: </h3>
             <FormContainer onSubmit={paymentHandler}>
                 <CardElement />

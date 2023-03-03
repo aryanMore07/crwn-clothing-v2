@@ -6,7 +6,9 @@ import Shop from './routes/shop/Shop';
 import CheckOut from './components/checkout/CheckOut';
 import { checkUserSession } from './store/user/userAction';
 import { useDispatch } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, Fragment } from 'react';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
 
@@ -17,15 +19,30 @@ const App = () => {
   }, [dispatch]);
 
   return (
-    <Routes>
-      <Route path='/' element={<Navigation />}>
-        <Route index element={<Home />} />
-        <Route path='shop/*' element={<Shop />} />
-        <Route path='auth' element={<Authentication />} />
-        <Route path='checkout' element={<CheckOut />} />
-      </Route>
-      
-    </Routes>
+    <Fragment>
+    <ToastContainer
+                limit={1}
+                position="top-center"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
+      <Routes>
+        <Route path='/' element={<Navigation />}>
+          <Route index element={<Home />} />
+          <Route path='shop/*' element={<Shop />} />
+          <Route path='auth' element={<Authentication />} />
+          <Route path='checkout' element={<CheckOut />} />
+        </Route>
+        
+      </Routes>
+    </Fragment>
   )
 };
 

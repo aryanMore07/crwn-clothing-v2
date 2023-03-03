@@ -9,7 +9,7 @@ import { NavigationContainer, LogoContainer, NavLinks, NavLink } from './navigat
 import { selectCurrentUser } from '../../store/user/userSelector';
 import { selectIsCartOpen } from '../../store/cart/cartSelector';
 import { signOutStart } from '../../store/user/userAction';
-
+import { FaUserAlt } from "react-icons/fa";
 
 const Navigation = () => {
 
@@ -28,6 +28,9 @@ const Navigation = () => {
                 </div>
             </LogoContainer>
             <NavLinks >
+                <NavLink to='/'>
+                  <FaUserAlt /> &nbsp; {currentUser ? `Welcome, ${currentUser.displayName}` : 'Guest'}
+                </NavLink>
                 <NavLink to='/shop'>SHOP</NavLink>
                 { currentUser ? (<NavLink as='span' onClick={signOutHandler}>SIGN OUT</NavLink>) : (<NavLink to='/auth'>SIGN IN</NavLink>) } 
               <CartIcon />

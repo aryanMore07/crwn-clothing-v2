@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addItemToCart } from '../../store/cart/cartAction';
 import { selectCartItems } from '../../store/cart/cartSelector';
 import { CategoryItem } from '../../store/categories/categoryTypes';
+import { toast } from 'react-toastify';
 
 type ProductCardProps = {
   product: CategoryItem;
@@ -21,7 +22,19 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
   const cartItems = useSelector(selectCartItems);
   const dispatch = useDispatch();
 
-  const addProductToCart = () => dispatch(addItemToCart(cartItems, product));
+  const addProductToCart = () => {
+    dispatch(addItemToCart(cartItems, product));
+    toast.success('Item added to cart', {
+      position: "top-center",
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      });
+  }
 
   return (
     <ProductCartContainer>
